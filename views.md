@@ -41,7 +41,7 @@ Of course, views may also be nested within sub-directories of the `resources/vie
 
 In the example above, the variable `$name` is made accessible to the view and contains `Victoria`.
 
-If you wish, you may pass an array of data as the second parameter to the `make` method:
+If you wish, you may pass an array of data as the second parameter to the `view` helper:
 
 	$view = view('greetings', $data);
 
@@ -71,6 +71,12 @@ Using the helper:
 	{
 		//
 	}
+
+### Returning A View From A File Path
+
+If you wish, you may generate a view from a fully-qualified file path:
+
+	return view()->file($pathToFile);
 
 <a name="view-composers"></a>
 ## View Composers

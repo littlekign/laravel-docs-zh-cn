@@ -13,7 +13,7 @@
 
 The Laravel Queue component provides a unified API across a variety of different queue services. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time, thus drastically speeding up the web requests to your application.
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io), and synchronous (for local use) driver.
+The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io), null, and synchronous (for local use) driver. The `null` queue driver simply discards queued jobs so they are never run.
 
 ### Queue Database Table
 
@@ -25,9 +25,10 @@ In order to use the `database` queue driver, you will need a database table to h
 
 The following dependencies are needed for the listed queue drivers:
 
-- Beanstalkd: `pda/pheanstalk ~3.0`
 - Amazon SQS: `aws/aws-sdk-php`
+- Beanstalkd: `pda/pheanstalk ~3.0`
 - IronMQ: `iron-io/iron_mq`
+- Redis: `predis/predis ~1.0`
 
 <a name="basic-usage"></a>
 ## Basic Usage
@@ -76,6 +77,12 @@ Sometimes you may wish to delay the execution of a queued job. For instance, you
 	Queue::later($date, new SendEmail($message));
 
 In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
+
+> **Note:** The Amazon SQS service has a delay limit of 900 seconds (15 minutes).
+
+#### Queues And Eloquent Models
+
+If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
 
 #### Deleting A Processed Job
 
@@ -237,6 +244,15 @@ If you would like to register an event that will be called when a queue job fail
 	{
 		//
 	});
+
+You may also define a `failed` method directly on a queue job class, allowing you to perform job specific actions when a failure occurs:
+
+	public function failed()
+	{
+		// Called when the job is failing...
+	}
+
+### Retrying Failed Jobs
 
 To view all of your failed jobs, you may use the `queue:failed` Artisan command:
 

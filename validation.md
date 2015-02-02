@@ -1,6 +1,8 @@
 # Validation
 
 - [Basic Usage](#basic-usage)
+- [Controller Validation](#controller-validation)
+- [Form Request Validation](#form-request-validation)
 - [Working With Error Messages](#working-with-error-messages)
 - [Error Messages & Views](#error-messages-and-views)
 - [Available Validation Rules](#available-validation-rules)
@@ -64,6 +66,173 @@ You may also access an array of the failed validation rules, without messages. T
 #### Validating Files
 
 The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
+
+### After Validation Hook
+
+The validator also allows you to attach callbacks to be run after validation is completed. This allows you to easily perform further validation, and even add more error messages to the message collection. To get started, use the `after` method on a validator instance:
+
+	$validator = Validator::make(...);
+
+	$validator->after(function($validator)
+	{
+		if ($this->somethingElseIsInvalid())
+		{
+			$validator->errors()->add('field', 'Something is wrong with this field!');
+		}
+	});
+
+	if ($validator->fails())
+	{
+		//
+	}
+
+You may add as many `after` callbacks to a validator as needed.
+
+<a name="controller-validation"></a>
+## Controller Validation
+
+Of course, manually creating and checking a `Validator` instance each time you do validation is a headache. Don't worry, you have other options! The base `App\Http\Controllers\Controller` class included with Laravel uses a `ValidatesRequests` trait. This trait provides a single, convenient method for validating incoming HTTP requests. Here's what it looks like:
+
+	/**
+	 * Store the incoming blog post.
+	 *
+	 * @param  Request  $request
+	 * @return Response
+	 */
+	public function store(Request $request)
+	{
+		$this->validate($request, [
+			'title' => 'required|unique|max:255',
+			'body' => 'required',
+		]);
+
+		//
+	}
+
+If validation passes, your code will keep executing normally. However, if validation fails, an `Illuminate\Contracts\Validation\ValidationException` will be thrown. This exception is automatically caught and a redirect is generated to the user's previous location. The validation errors are even automatically flashed to the session!
+
+If the incoming request was an AJAX request, no redirect will be generated. Instead, an HTTP response with a 422 status code will be returned to the browser containing a JSON representation of the validation errors.
+
+For example, here is the equivalent code written manually:
+
+	/**
+	 * Store the incoming blog post.
+	 *
+	 * @param  Request  $request
+	 * @return Response
+	 */
+	public function store(Request $request)
+	{
+		$v = Validator::make($request->all(), [
+			'title' => 'required|unique|max:255',
+			'body' => 'required',
+		]);
+
+		if ($v->fails())
+		{
+			return redirect()->back()->withErrors($v->errors());
+		}
+
+		//
+	}
+
+### Customizing The Flashed Error Format
+
+If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base controller. Don't forget to import the `Illuminate\Validation\Validator` class at the top of the file:
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function formatValidationErrors(Validator $validator)
+	{
+		return $validator->errors()->all();
+	}
+
+<a name="form-request-validation"></a>
+## Form Request Validation
+
+For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command:
+
+	php artisan make:request StoreBlogPostRequest
+
+The generated class will be placed in the `app/Http/Requests` directory. Let's add a few validation rules to the `rules` method:
+
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
+	public function rules()
+	{
+		return [
+			'title' => 'required|unique|max:255',
+			'body' => 'required',
+		];
+	}
+
+So, how are the validation rules executed? All you need to do is type-hint the request on your controller method:
+
+	/**
+	 * Store the incoming blog post.
+	 *
+	 * @param  StoreBlogPostRequest  $request
+	 * @return Response
+	 */
+	public function store(StoreBlogPostRequest $request)
+	{
+		// The incoming request is valid...
+	}
+
+The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic. It has already been validated!
+
+If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
+
+### Authorizing Form Requests
+
+The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. For example, if a user is attempting to update a blog post comment, do they actually own that comment? For example:
+
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize()
+	{
+		$commentId = $this->route('comment');
+
+		return Comment::where('id', $commentId)
+                      ->where('user_id', Auth::id())->exists();
+	}
+
+Note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
+
+	Route::post('comment/{comment}');
+
+If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
+
+If you plan to have authorization logic in another part of your application, simply return `true` from the `authorize` method:
+
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize()
+	{
+		return true;
+	}
+
+### Customizing The Flashed Error Format
+
+If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Validation\Validator` class at the top of the file:
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function formatErrors(Validator $validator)
+	{
+		return $validator->errors()->all();
+	}
 
 <a name="working-with-error-messages"></a>
 ## Working With Error Messages
@@ -189,6 +358,7 @@ Below is a list of all available validation rules and their function:
 - [Required Without All](#rule-required-without-all)
 - [Same](#rule-same)
 - [Size](#rule-size)
+- [String](#rule-string)
 - [Timezone](#rule-timezone)
 - [Unique (Database)](#rule-unique)
 - [URL](#rule-url)
@@ -394,6 +564,11 @@ The given _field_ must match the field under validation.
 #### size:_value_
 
 The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For files, _size_ corresponds to the file size in kilobytes.
+
+<a name="rule-string"></a>
+#### string:_value_
+
+The field under validation must be a string type.
 
 <a name="rule-timezone"></a>
 #### timezone
