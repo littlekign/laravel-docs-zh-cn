@@ -15,7 +15,7 @@ Laravel makes implementing authentication very simple. In fact, almost everythin
 
 By default, Laravel includes an `App\User` model in your `app` directory. This model may be used with the default Eloquent authentication driver.
 
-Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration.
+Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. Of course, Laravel 5 ships migrations for these columns out of the box!
 
 If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
@@ -194,12 +194,12 @@ Second, you may access the authenticated user via an `Illuminate\Http\Request` i
 
 	}
 
-Thirdly, you may type-hint the `Illuminate\Contracts\Auth\User` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/master/container):
+Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/master/container):
 
 	<?php namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
-	use Illuminate\Contracts\Auth\User;
+	use Illuminate\Contracts\Auth\Authenticatable;
 
 	class ProfileController extends Controller {
 
@@ -208,7 +208,7 @@ Thirdly, you may type-hint the `Illuminate\Contracts\Auth\User` contract. This t
 		 *
 		 * @return Response
 		 */
-		public function updateProfile(User $user)
+		public function updateProfile(Authenticatable $user)
 		{
 			// $user is an instance of the authenticated user...
 		}
@@ -321,7 +321,7 @@ Next, you are ready to authenticate users! You will need two routes: one for red
 
 The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Before redirecting the user, you may also set "scopes" on the request:
 
-	return Socialize::with('twitter')->scopes(['scope1', 'scope2'])->redirect();
+	return Socialize::with('github')->scopes(['scope1', 'scope2'])->redirect();
 
 Once you have a user instance, you can grab a few more details about the user:
 
