@@ -4,6 +4,7 @@
 - [Views](#views)
 - [Translations](#translations)
 - [Configuration](#configuration)
+- [Publishing File Groups](#publishing-file-groups)
 - [Routing](#routing)
 
 <a name="introduction"></a>
@@ -56,6 +57,10 @@ To publish your package's views to the `resource/views/vendor` directory, you sh
 
 Now, when users of your package execute Laravel's `vendor:publish` command, your views directory will be copied to the specified location.
 
+If you would like to overwrite existing files, use the `--force` switch:
+
+	php artisan vendor:publish --force
+
 > **Note:** You may use the `publishes` method to publish **any** type of file to any location you wish.
 
 <a name="translations"></a>
@@ -98,6 +103,25 @@ You may also choose to merge your own package configuration file with the applic
 	$this->mergeConfigFrom(
 		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
+
+<a name="publishing-file-groups"></a>
+## Publishing File Groups
+
+You may want to publish groups of files separately. For instance, you might want your users to be able to publish your package's configuration files and asset files separately. You can do this by 'tagging' them:
+
+	// Publish a config file
+	$this->publishes([
+		__DIR__.'/../config/package.php', config_path('package.php')
+	], 'config');
+
+	// Publish your migrations
+	$this->publishes([
+		__DIR__.'/../database/migrations/' => base_path('/database/migrations')
+	], 'migrations');
+
+You can then publish these files separately by referencing their tag like so:
+
+	php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"
 
 <a name="routing"></a>
 ## Routing
