@@ -29,7 +29,7 @@ In this overview you will learn how to write your own service providers and regi
 ## Basic Provider Example
 ## Provider 基础实例
 
-All service providers extend the `Illuminate\Support\ServiceProvider` class. This abstract class requires that you define at least one method on your provider: `register`. Within the `register` method, you should **only bind things into the [service container](/docs/master/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
+All service providers extend the `Illuminate\Support\ServiceProvider` class. This abstract class requires that you define at least one method on your provider: `register`. Within the `register` method, you should **only bind things into the [service container](/docs/5.0/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
 
 所有的 service prvoders 都要继承 `Illuminate\Support\ServiceProvider` 类。这个抽象类要求必须定义一个 `register` 方法。 在 `register` 方法中，**只能将东西绑定到 [service container](/docs/master/container)**。不要尝试注册任何事件监听器，路由规则，以及任何功能性的代码。
 
@@ -68,7 +68,7 @@ Now, let's take a look at a basic service provider:
 
 	}
 
-This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Contracts\Connection` in the service container. If you don't understand how the service container works, don't worry, [we'll cover that soon](/docs/master/container).
+This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Contracts\Connection` in the service container. If you don't understand how the service container works, don't worry, [we'll cover that soon](/docs/5.0/container).
 
 这个 service provider 只定义了 `register` 方法，并使用这个方法在 service container 中定义了一个 `Riak\Contracts\Connection` 的实例。
 
@@ -144,7 +144,7 @@ To register your provider, simply add it to the array:
 <a name="deferred-providers"></a>
 ## Deferred Providers
 
-If your provider is **only** registering bindings in the [service container](/docs/master/container), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
+If your provider is **only** registering bindings in the [service container](/docs/5.0/container), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
 
 如果一个 provider 仅用来在 [service container](/docs/master/container) 中注册绑定，你可以将它的注册做延迟处理，只在当有已注册的绑定真的需要它时才进行注册。延后这种 provider 的加载有利于提升应用的性能，因为它不会在每次请求时都从文件系统中被加载。
 

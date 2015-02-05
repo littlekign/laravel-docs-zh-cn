@@ -28,7 +28,7 @@ When using the `local` driver, note that all file operations are relative to the
 <a name="basic-usage"></a>
 ## Basic Usage
 
-The `Storage` facade may be used to interact with any of your configured disks. Alternatively, you may type-hint the `Illuminate\Contracts\Filesystem\Factory` contract on any class that is resolved via the [IoC container](/docs/master/container).
+The `Storage` facade may be used to interact with any of your configured disks. Alternatively, you may type-hint the `Illuminate\Contracts\Filesystem\Factory` contract on any class that is resolved via the [IoC container](/docs/5.0/container).
 
 #### Retrieving A Particular Disk
 
@@ -36,11 +36,11 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 
 	$disk = Storage::disk('local');
 
-#### Calling Methods On The Default Disk
+#### Determining If A File Exists
 
 	$exists = Storage::disk('s3')->exists('file.jpg');
 
-#### Determining If A File Exists
+#### Calling Methods On The Default Disk
 
 	if (Storage::exists('file.jpg'))
 	{

@@ -162,9 +162,9 @@ Contract  |  Laravel 4.x Facade
 <a name="how-to-use-contracts"></a>
 ## 如何使用合约（How To Use Contracts）
 
-So, how do you get an implementation of a contract? It's actually quite simple. Many types of classes in Laravel are resolved through the [service container](/docs/master/container), including controllers, event listeners, filters, queue jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved. For example, take a look at this event handler:
+So, how do you get an implementation of a contract? It's actually quite simple. Many types of classes in Laravel are resolved through the [service container](/docs/5.0/container), including controllers, event listeners, filters, queue jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved. For example, take a look at this event handler:
 
-那么，如何获得一个合约的实例？其实很简单。在 Laravel 中很多类型的类都通过[容器](/docs/master/container)调用，包括 ontrollers, event listeners, filters, queue jobs, 以及 route Closures。所以，你可以直接在被调用类的构造方法中用“类型约定”的方式绑定接口，以此来获得一个合约的实例。例如，下面这个事件处理器的例子：
+那么，如何获得一个合约的实例？其实很简单。在 Laravel 中很多类型的类都通过[容器](/docs/5.0/container)调用，包括 ontrollers, event listeners, filters, queue jobs, 以及 route Closures。所以，你可以直接在被调用类的构造方法中用“类型约定”的方式绑定接口，以此来获得一个合约的实例。例如，下面这个事件处理器的例子：
 
 	<?php namespace App\Handlers\Events;
 
@@ -203,6 +203,6 @@ So, how do you get an implementation of a contract? It's actually quite simple. 
 
 	}
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [the documentation](/docs/master/container).
+When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [the documentation](/docs/5.0/container).
 
-当事件监听器被调用时，容器将会从类的构造方法中读取“类型约定”的内容，并注入相应的值。了解更多关于在容器中注册的信息，请查看[容器相关文档](/docs/master/container)
+当事件监听器被调用时，容器将会从类的构造方法中读取“类型约定”的内容，并注入相应的值。了解更多关于在容器中注册的信息，请查看[容器相关文档](/docs/5.0/container)
