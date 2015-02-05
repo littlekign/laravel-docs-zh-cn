@@ -6,7 +6,7 @@
 - [延迟 Providers](#deferred-providers)
 
 <a name="introduction"></a>
-## Introduction
+## 简介（Introduction）
 
 Service providers are the central place of all Laravel application bootstrapping. Your own application, as well as all of Laravel's core services are bootstrapped via service providers.
 
@@ -26,12 +26,11 @@ In this overview you will learn how to write your own service providers and regi
 在这篇概览中你将会学习如何在你的 Laravel 应用中创建并注册你自己的 service providers。
 
 <a name="basic-provider-example"></a>
-## Basic Provider Example
-## Provider 基础实例
+## Provider 基础实例（Basic Provider Example）
 
 All service providers extend the `Illuminate\Support\ServiceProvider` class. This abstract class requires that you define at least one method on your provider: `register`. Within the `register` method, you should **only bind things into the [service container](/docs/5.0/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
 
-所有的 service prvoders 都要继承 `Illuminate\Support\ServiceProvider` 类。这个抽象类要求必须定义一个 `register` 方法。 在 `register` 方法中，**只能将东西绑定到 [service container](/docs/master/container)**。不要尝试注册任何事件监听器，路由规则，以及任何功能性的代码。
+所有的 service prvoders 都要继承 `Illuminate\Support\ServiceProvider` 类。这个抽象类要求必须定义一个 `register` 方法。 在 `register` 方法中，**只能将东西绑定到 [service container](/docs/5.0/container)**。不要尝试注册任何事件监听器，路由规则，以及任何功能性的代码。
 
 The Artisan CLI can easily generate a new provider via the `make:provider` command:
 
@@ -39,8 +38,7 @@ The Artisan CLI can easily generate a new provider via the `make:provider` comma
 
 	php artisan make:provider RiakServiceProvider
 
-### The Register Method
-### Register 方法
+### Register 方法（The Register Method）
 
 Now, let's take a look at a basic service provider:
 
@@ -70,14 +68,13 @@ Now, let's take a look at a basic service provider:
 
 This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Contracts\Connection` in the service container. If you don't understand how the service container works, don't worry, [we'll cover that soon](/docs/5.0/container).
 
-这个 service provider 只定义了 `register` 方法，并使用这个方法在 service container 中定义了一个 `Riak\Contracts\Connection` 的实例。
+这个 service provider 只定义了 `register` 方法，并使用这个方法在 service container 中定义了一个 `Riak\Contracts\Connection` 的实例。如果你对容器的工作机制还不太清楚，不要担心，[我们很快就会介绍到它](/docs/5.0/container)。
 
 This class is namespaced under `App\Providers` since that is the default location for service providers in Laravel. However, you are free to change this as you wish. Your service providers may be placed anywhere that Composer can autoload them.
 
 这个类被定义在 Laravel 默认存放 service providers 的命名空间 `App\Providers` 中。但是也可以对它进行变更。你的 service providers 只可以被放置在任何 Composer 可以自动加载它们的地方。
 
-### The Boot Method
-### Boot 方法
+### Boot 方法（The Boot Method）
 
 So, what if we need to register an event listener within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework.
 
@@ -124,8 +121,7 @@ We are able to type-hint dependencies for our `boot` method. The service contain
 	}
 
 <a name="registering-providers"></a>
-## Registering Providers
-## 注册 Provider
+## 注册 Provider（Registering Providers）
 
 All service providers are registered in the `config/app.php` configuration file. This file contains a `providers` array where you can list the names of your service providers. By default, a set of Laravel core service providers are listed in this array. These providers bootstrap the core Laravel components, such as the mailer, queue, cache, and others.
 
@@ -142,11 +138,11 @@ To register your provider, simply add it to the array:
 	],
 
 <a name="deferred-providers"></a>
-## Deferred Providers
+## Providers 延迟（Deferred Providers）
 
 If your provider is **only** registering bindings in the [service container](/docs/5.0/container), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
 
-如果一个 provider 仅用来在 [service container](/docs/master/container) 中注册绑定，你可以将它的注册做延迟处理，只在当有已注册的绑定真的需要它时才进行注册。延后这种 provider 的加载有利于提升应用的性能，因为它不会在每次请求时都从文件系统中被加载。
+如果一个 provider 仅用来在 [service container](/docs/5.0/container) 中注册绑定，你可以将它的注册做延迟处理，只在当有已注册的绑定真的需要它时才进行注册。延后这种 provider 的加载有利于提升应用的性能，因为它不会在每次请求时都从文件系统中被加载。
 
 To defer the loading of a provider, set the `defer` property to `true` and define a `provides` method. The `provides` method returns the service container bindings that the provider registers:
 

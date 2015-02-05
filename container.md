@@ -71,7 +71,7 @@ A deep understanding of the Laravel service container is essential to building a
 
 Almost all of your service container bindings will be registered within [service providers](/docs/5.0/providers), so all of these examples will demonstrate using the container in that context. However, if you need an instance of the container elsewhere in your application, such as a factory, you may type-hint the `Illuminate\Contracts\Container\Container` contract and an instance of the container will be injected for you. Alternatively, you may use the `App` facade to access the container.
 
-基本上所有的容器绑定都需要在 [service providers](/docs/master/providers) 中进行注册，所以下面所有的示例都将模拟在这种环境下使用容器。如果你在程序的任何地方（例如某个工厂类中）需要使用容器时，你都可以通过类型约束（type-hint）来指定一个约定类 `Illuminate\Contracts\Container\Container` ，同时能够得到被注入的容器的实例。另外，也可以通过 `App` 来操作容器。
+基本上所有的容器绑定都需要在 [service providers](/docs/5.0/providers) 中进行注册，所以下面所有的示例都将模拟在这种环境下使用容器。如果你在程序的任何地方（例如某个工厂类中）需要使用容器时，你都可以通过类型约束（type-hint）来指定一个约定类 `Illuminate\Contracts\Container\Container` ，同时能够得到被注入的容器的实例。另外，也可以通过 `App` 来操作容器。
 
 #### 注册一个基础的 Resolver
 
@@ -340,7 +340,7 @@ Laravel 提供很多使用容器来增加程序的灵活性和可测试性的机
 
 In this example, the `OrderRepository` class will automatically be injected into the controller. This means that a "mock" `OrderRepository` may be bound into the container when [unit testing](/docs/5.0/testing), allowing for painless stubbing of database layer interaction.
 
-在这个例子中，`OrderRepository` 类会被自动注入到控制器中。这也意味着可以在进行[单元测试](/docs/master/testing)时将一个模拟的 `OrderRepository` 绑定到容器中，以此来实现与数据层的无痛交互。
+在这个例子中，`OrderRepository` 类会被自动注入到控制器中。这也意味着可以在进行[单元测试](/docs/5.0/testing)时将一个模拟的 `OrderRepository` 绑定到容器中，以此来实现与数据层的无痛交互。
 
 #### 容器的其他用法（Other Examples Of Container Usage）
 
