@@ -10,17 +10,17 @@
 <a name="introduction"></a>
 ## 简介（Introduction）
 
-Facades provide a "static" interface to classes that are available in the application's [IoC container](/docs/ioc). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the IoC container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Facades provide a "static" interface to classes that are available in the application's [IoC container](/docs/5.0/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the IoC container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
 
-Facades 给那些在应用的 [IoC 容器](/docs/ioc)中可用的类提供一个静态接口。Laravel 自带了很多 Facades，而且你很可能已经在不知不觉中用到了它们！在 Laravel 中 ，Facades 为那些在 Ioc 容器中的基础类提供一种类似于“静态代理”的功能，它能够提供一种更简洁的，富于表达的语法，使维护的代码相较传统静态方法更灵活，更易于测试。
+Facades 给那些在应用的 [IoC 容器](/doc/5.0/container)中可用的类提供一个静态接口。Laravel 自带了很多 Facades，而且你很可能已经在不知不觉中用到了它们！在 Laravel 中 ，Facades 为那些在 Ioc 容器中的基础类提供一种类似于“静态代理”的功能，它能够提供一种更简洁的，富于表达的语法，使维护的代码相较传统静态方法更灵活，更易于测试。
 
 Occasionally, You may wish to create your own facades for your applications and packages, so let's explore the concept, development and usage of these classes.
 
 偶尔，你可能希望为自己应的用或程序包创建 Facade，下面我们就一起看一下 Facade 的实现思路，如何开发以及使用它。
 
-> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [IoC container](/docs/ioc).
+> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [IoC container](/docs/5.0/container).
 
-> **注意：** 在开始更深入研究 facades 之前，强烈建议你先对 Laravel 的[IoC 容器](/docs/ioc)有一个比较全面的了解。
+> **注意：** 在开始更深入研究 facades 之前，强烈建议你先对 Laravel 的[IoC 容器](/docs/5.0/container)有一个比较全面的了解。
 
 <a name="explanation"></a>
 ## 详解（Explanation）
@@ -141,9 +141,9 @@ We need to be able to resolve this class from the IoC container. So, let's add a
 		return new \PaymentGateway\Payment;
 	});
 
-A great place to register this binding would be to create a new [service provider](/docs/ioc#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `config/app.php` configuration file.
+A great place to register this binding would be to create a new [service provider](/docs/5.0/container#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `config/app.php` configuration file.
 
-一个注册这个绑定很好的方式是，新建一个名为 `PaymentServiceProvider` 的 [service provider](/docs/ioc#service-providers)，并将这个绑定添加到 `register` 方法中。然后就可以在 `config/app.php` 中进行配置，并让你的应用加载上这个 service provider 了。
+一个注册这个绑定很好的方式是，新建一个名为 `PaymentServiceProvider` 的 [service provider](/docs/5.0/container#service-providers)，并将这个绑定添加到 `register` 方法中。然后就可以在 `config/app.php` 中进行配置，并让你的应用加载上这个 service provider 了。
 
 Next, we can create our own facade class:
 
@@ -179,9 +179,9 @@ Unit testing is an important aspect of why facades work the way that they do. In
 <a name="facade-class-reference"></a>
 ## Facade 类索引（Facade Class Reference）
 
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [IoC binding](/docs/ioc) key is also included where applicable.
+Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [IoC binding](/docs/5.0/container) key is also included where applicable.
 
-下面的索引中你能够找到 Laravel 提供的每一个 facade 以及所对应的真正的类。如果你想要对某个 facade 进行深入的了解，这是一个能够帮你快速找到对应 API 文档入口的工具。[IoC binding](/docs/ioc) 中的 key 也被列入其中。
+下面的索引中你能够找到 Laravel 提供的每一个 facade 以及所对应的真正的类。如果你想要对某个 facade 进行深入的了解，这是一个能够帮你快速找到对应 API 文档入口的工具。[IoC binding](/docs/5.0/container) 中的 key 也被列入其中。
 
 Facade  |  Class  |  IoC Binding
 ------------- | ------------- | -------------
