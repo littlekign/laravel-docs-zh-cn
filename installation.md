@@ -92,7 +92,7 @@ Laravel may require some permissions to be configured: folders within `storage` 
 还需要对 Laravel 进行一些权限的设置：web server 需要对 `storage` 中的目录有写入的权限。
 
 <a name="pretty-urls"></a>
-## 美化 URL（Pretty URLs）
+## URL美化（Pretty URLs）
 
 ### Apache
 
@@ -102,7 +102,7 @@ The framework ships with a `public/.htaccess` file that is used to allow URLs wi
 
 If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
 
-如果 Laravel 自带的 `.htaccess` 文件在你的 Apache 下不起作用，试一下这个规则：
+如果 Laravel 自带的 `.htaccess` 文件在你的 Apache 下不起作用，请尝试一下这个规则：
 
 	Options +FollowSymLinks
 	RewriteEngine On
@@ -115,7 +115,7 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 
 On Nginx, the following directive in your site configuration will allow "pretty" URLs:
 
-在 Nginx 下，请在你网站的配置中使用以下的重定向规则，来实现美化 URL：
+在 Nginx 下，请在你网站的配置中使用以下的重定向规则，来实现 URL 美化：
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
@@ -123,4 +123,4 @@ On Nginx, the following directive in your site configuration will allow "pretty"
 
 Of course, when using [Homestead](/docs/5.0/homestead), pretty URLs will be configured automatically.
 
-当然，如果使用 [Homestead](/docs/5.0/homestead) ，美化 URL 会自动配置好的。
+当然，如果使用 [Homestead](/docs/5.0/homestead) ，URL 美化会自动配置好的。
